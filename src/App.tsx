@@ -206,7 +206,7 @@ const featured = MANUAL_PROJECTS
           </div>
         </section>
 
-        <Section id="projects" title="Projetos" subtitle="Destaques + lista vinda do seu GitHub (com previews).">
+        <Section id="projects" title="Projetos" >
           {loading ? (
             <div className="grid featured">
               {Array.from({ length: 3 }).map((_, i) => (
