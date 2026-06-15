@@ -13,7 +13,6 @@ export type Repo = {
   archived: boolean
 }
 
-
 export type ProjectLike = {
   key: string
   title: string
@@ -23,4 +22,7 @@ export type ProjectLike = {
   demoUrl?: string | null
   tags?: string[]
   updatedAt?: string
+  eyebrow?: string
+  note?: string
+  ctaLabel?: string
 }

@@ -13,15 +13,11 @@ export async function fetchRepos(): Promise<Repo[]> {
   const data = (await res.json()) as Repo[]
 
   return data
-    .filter((r) => !r.fork && !r.archived)
+    .filter((repo) => !repo.fork && !repo.archived)
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
 }
 
-export function repoOgImage(fullName: string) {
-  return `https://opengraph.githubassets.com/wesley/${fullName}`
-}
-
 export function looksLikeVinicola(name: string) {
-  const n = name.toLowerCase()
-  return n.includes('vinic') || n.includes('vinicul') || n.includes('vinicola') || n.includes('vinicula')
+  const normalized = name.toLowerCase()
+  return normalized.includes('vinic') || normalized.includes('vinicul') || normalized.includes('vinicola') || normalized.includes('vinicula')
 }
