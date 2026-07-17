@@ -1,0 +1,71 @@
+.archiveNav > a,
+.cornerMark {
+  font-size: 0;
+}
+
+.archiveNav > a::after,
+.cornerMark::after {
+  content: 'WESSYU';
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.archiveNav div a:nth-child(3) {
+  display: none;
+}
+
+.archiveNav div a:nth-child(4) {
+  font-size: 0;
+}
+
+.archiveNav div a:nth-child(4)::after {
+  content: 'Sobre';
+  font-size: 0.82rem;
+}
+
+.intro h1 {
+  font-size: 0;
+}
+
+.intro h1::after {
+  content: 'ARQUIVO DE\A TRABALHOS';
+  display: block;
+  white-space: pre-line;
+  font-family: 'Sora', Arial, sans-serif;
+  font-size: clamp(3.2rem, 6vw, 5.8rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+}
+
+.introRole {
+  max-width: 360px;
+  color: rgba(242, 240, 234, 0.72);
+  font-size: clamp(0.94rem, 1.15vw, 1.08rem);
+  line-height: 1.7;
+}
+
+.why,
+.process {
+  display: none;
+}
+
+.work {
+  border-top: 1px solid var(--line);
+}
+
+@media (max-width: 720px) {
+  .archiveNav > a::after,
+  .cornerMark::after,
+  .archiveNav div a:nth-child(4)::after {
+    font-size: 0.74rem;
+  }
+
+  .intro h1::after {
+    font-size: clamp(2.35rem, 12vw, 3.4rem);
+  }
+
+  .introRole {
+    max-width: calc(100% - (var(--pad) * 2));
+    font-size: 0.9rem;
+  }
+}
