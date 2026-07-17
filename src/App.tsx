@@ -36,7 +36,7 @@ const PROJECTS: ProjectCase[] = [
     number: '002',
     title: 'DevMatch',
     year: '2026',
-    image: '/projects/devmatch/overview.svg',
+    image: '/projects/devmatch/home.png',
     repository: 'https://github.com/WessYu/DEVMATCH',
     summary: 'Sistema de perfis, matches, filtros e conversas entre empresas e desenvolvedores.',
     problem:
@@ -48,10 +48,10 @@ const PROJECTS: ProjectCase[] = [
     technicalNotes: ['Next.js', 'API routes', 'Autenticacao', 'Persistencia', 'Busca', 'Componentizacao'],
     process: ['Ideia', 'Pesquisa', 'Wireframe', 'Desenvolvimento', 'Versao final'],
     screens: [
-      { label: 'Feed', src: '/projects/devmatch/overview.svg' },
-      { label: 'Perfil', src: '/projects/devmatch/profile.svg' },
-      { label: 'Match', src: '/projects/devmatch/match.svg' },
-      { label: 'Mensagens', src: '/projects/devmatch/chat.svg' },
+      { label: 'Feed', src: '/projects/devmatch/feed.png' },
+      { label: 'Perfil', src: '/projects/devmatch/dev.png' },
+      { label: 'Match', src: '/projects/devmatch/contractor.png' },
+      { label: 'Mensagens', src: '/projects/devmatch/chat.png' },
     ],
   },
   {
