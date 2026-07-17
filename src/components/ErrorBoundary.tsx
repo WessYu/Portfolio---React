@@ -15,7 +15,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
     if (error instanceof Error) {
       this.setState({ stack: error.stack })
     }
-    console.error('Archive crashed:', error)
+    console.error('Falha ao carregar o arquivo:', error)
   }
 
   render() {
@@ -42,10 +42,10 @@ export class ErrorBoundary extends React.Component<Props, State> {
             background: '#0b0b0b',
           }}
         >
-          <p style={{ margin: 0, fontSize: 12, color: 'rgba(242,240,234,.48)', fontWeight: 800 }}>WESSYU ARCHIVE</p>
-          <h1 style={{ margin: '12px 0 0', fontSize: 24, fontFamily: '"Sora", Arial, sans-serif' }}>The archive failed to load.</h1>
+          <p style={{ margin: 0, fontSize: 12, color: 'rgba(242,240,234,.48)', fontWeight: 800 }}>WESSYU ARQUIVO</p>
+          <h1 style={{ margin: '12px 0 0', fontSize: 24, fontFamily: '"Sora", Arial, sans-serif' }}>Não foi possível carregar o arquivo.</h1>
           <p style={{ marginTop: 12, color: 'rgba(242,240,234,.62)', lineHeight: 1.7 }}>
-            The main error message is shown below for debugging.
+            A mensagem principal do erro aparece abaixo para depuração.
           </p>
           <pre
             style={{
@@ -60,7 +60,7 @@ export class ErrorBoundary extends React.Component<Props, State> {
               color: '#d8cfc0',
             }}
           >
-            {this.state.message || 'Unknown error'}
+            {this.state.message || 'Erro desconhecido'}
             {this.state.stack ? '\n\n' + this.state.stack : ''}
           </pre>
         </div>

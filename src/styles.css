@@ -49,6 +49,7 @@ a {
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 h1,
@@ -86,8 +87,7 @@ h3 {
   gap: 24px;
   padding: 18px var(--pad);
   border-bottom: 1px solid var(--line);
-  background: rgba(5, 5, 5, 0.74);
-  backdrop-filter: blur(18px);
+  background: rgba(5, 5, 5, 0.94);
 }
 
 .archiveNav a {
@@ -104,11 +104,19 @@ h3 {
 .archiveNav div {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 22px;
 }
 
 .archiveNav a:hover {
   color: var(--text);
+}
+
+.archiveNav a:focus-visible,
+.caseActions a:focus-visible,
+.contact a:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .intro {
@@ -147,6 +155,7 @@ h3 {
   gap: 18px;
   font-size: 4.4rem;
   line-height: 0.98;
+  overflow-wrap: anywhere;
 }
 
 .introCenter > span {
@@ -338,6 +347,7 @@ h3 {
 
 .caseHero img {
   width: 100%;
+  height: auto;
   max-height: 82vh;
   object-fit: cover;
   object-position: top center;
@@ -526,6 +536,45 @@ h3 {
   margin-top: 48px;
 }
 
+.projectProcessGrid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 48px;
+}
+
+.projectProcessCard {
+  min-height: 330px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.projectProcessCard span {
+  color: var(--quiet);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.projectProcessCard h3 {
+  margin-top: 16px;
+  font-size: 1.15rem;
+}
+
+.projectProcessCard ol {
+  display: grid;
+  gap: 12px;
+  margin: 28px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+}
+
+.projectProcessCard li {
+  padding-left: 4px;
+  line-height: 1.55;
+}
+
 .processRail article {
   min-height: 180px;
   padding: 20px;
@@ -628,7 +677,8 @@ h3 {
   .evolutionGrid,
   .noteGrid,
   .focusGrid,
-  .processRail {
+  .processRail,
+  .projectProcessGrid {
     grid-template-columns: 1fr;
   }
 
@@ -657,7 +707,7 @@ h3 {
 
   .archiveNav div {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 8px;
   }
 
@@ -674,7 +724,7 @@ h3 {
   }
 
   .intro h1 {
-    font-size: 2.6rem;
+    font-size: 2.15rem;
   }
 
   .introRole {
@@ -688,6 +738,12 @@ h3 {
 
   .projectImageButton img {
     object-position: top left;
+    transform: translateY(0) scale(1.01);
+  }
+
+  .projectImageButton:hover img,
+  .projectImageButton:focus-visible img {
+    transform: translateY(0) scale(1.03);
   }
 
   .projectLabel {
