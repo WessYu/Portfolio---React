@@ -104,7 +104,7 @@ const PROJECTS: ProjectCase[] = [
     number: '005',
     title: 'Differenza',
     year: '2024',
-    image: '/projects/differenza/overview.svg',
+    image: '/projects/differenza/after.png',
     repository: 'https://github.com/WessYu',
     summary: 'Estudo de melhoria visual mostrando antes, depois, problemas encontrados e solucoes aplicadas.',
     problem:
