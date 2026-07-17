@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
-  <rect width="1440" height="900" fill="#070707"/>
-  <text x="112" y="148" fill="#f2f0ea" font-family="Arial" font-size="44" font-weight="700">HELENA / Mobile</text>
-  <rect x="540" y="210" width="360" height="580" rx="28" fill="#111" stroke="rgba(255,255,255,.18)"/>
-  <rect x="582" y="270" width="276" height="170" rx="8" fill="#d8cfc0"/>
-  <rect x="582" y="470" width="276" height="70" rx="8" fill="#171717"/>
-  <rect x="582" y="570" width="276" height="70" rx="8" fill="#171717"/>
-</svg>

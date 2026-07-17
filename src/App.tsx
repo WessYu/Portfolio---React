@@ -59,7 +59,7 @@ const PROJECTS: ProjectCase[] = [
     number: '003',
     title: 'Logic Quest',
     year: '2025',
-    image: '/projects/logic-quest/overview.svg',
+    image: '/projects/logic-quest/overview.png',
     repository: 'https://github.com/WessYu/Logic-quest',
     summary: 'Produto educacional com questoes, pontuacao, progresso e estrutura de jogo.',
     problem:
@@ -71,10 +71,10 @@ const PROJECTS: ProjectCase[] = [
     technicalNotes: ['React', 'Estado local', 'Persistencia', 'Rotas de aprendizado', 'Dashboard', 'Historico'],
     process: ['Ideia', 'Pesquisa', 'Wireframe', 'Desenvolvimento', 'Versao final'],
     screens: [
-      { label: 'Dashboard', src: '/projects/logic-quest/overview.svg' },
-      { label: 'Questoes', src: '/projects/logic-quest/questions.svg' },
-      { label: 'Resultados', src: '/projects/logic-quest/results.svg' },
-      { label: 'Ranking', src: '/projects/logic-quest/ranking.svg' },
+      { label: 'Dashboard', src: '/projects/logic-quest/overview.png' },
+      { label: 'Questoes', src: '/projects/logic-quest/questions.png' },
+      { label: 'Resultados', src: '/projects/logic-quest/results.png' },
+      { label: 'Ranking', src: '/projects/logic-quest/ranking.png' },
     ],
   },
   {
@@ -82,7 +82,7 @@ const PROJECTS: ProjectCase[] = [
     number: '004',
     title: 'HELENA',
     year: '2025',
-    image: '/projects/helena/overview.svg',
+    image: '/projects/helena/overview.png',
     repository: 'https://github.com/WessYu',
     summary: 'Redesign com foco em hierarquia visual, conteudo, experiencia mobile e performance.',
     problem:
@@ -94,9 +94,9 @@ const PROJECTS: ProjectCase[] = [
     technicalNotes: ['React', 'CSS responsivo', 'SEO basico', 'Imagens otimizadas', 'Layout editorial'],
     process: ['Ideia', 'Pesquisa', 'Wireframe', 'Desenvolvimento', 'Versao final'],
     screens: [
-      { label: 'Antes', src: '/projects/helena/overview.svg' },
-      { label: 'Depois', src: '/projects/helena/after.svg' },
-      { label: 'Mobile', src: '/projects/helena/mobile.svg' },
+      { label: 'Home', src: '/projects/helena/overview.png' },
+      { label: 'Painel', src: '/projects/helena/after.png' },
+      { label: 'Mobile', src: '/projects/helena/mobile.png' },
     ],
   },
   {
@@ -117,8 +117,8 @@ const PROJECTS: ProjectCase[] = [
     process: ['Ideia', 'Pesquisa', 'Wireframe', 'Desenvolvimento', 'Versao final'],
     screens: [
       { label: 'Antes', src: '/projects/differenza/overview.svg' },
-      { label: 'Depois', src: '/projects/differenza/after.svg' },
-      { label: 'Solucoes', src: '/projects/differenza/solutions.svg' },
+      { label: 'Depois', src: '/projects/differenza/after.png' },
+      { label: 'Solucoes', src: '/projects/differenza/solutions.png' },
     ],
   },
 ]

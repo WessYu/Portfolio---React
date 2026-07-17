@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
-  <rect width="1440" height="900" fill="#070707"/>
-  <text x="112" y="148" fill="#f2f0ea" font-family="Arial" font-size="44" font-weight="700">HELENA / Redesign</text>
-  <rect x="112" y="230" width="1216" height="520" rx="8" fill="#111" stroke="rgba(255,255,255,.14)"/>
-  <rect x="170" y="300" width="520" height="360" rx="8" fill="#171717"/>
-  <text x="750" y="360" fill="#f2f0ea" font-family="Arial" font-size="34" font-weight="700">Hierarquia mais clara</text>
-  <text x="750" y="420" fill="rgba(242,240,234,.62)" font-family="Arial" font-size="24">Conteudo organizado para leitura rapida.</text>
-</svg>

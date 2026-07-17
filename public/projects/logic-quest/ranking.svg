@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
-  <rect width="1440" height="900" fill="#070707"/>
-  <text x="112" y="148" fill="#f2f0ea" font-family="Arial" font-size="44" font-weight="700">Logic Quest / Ranking</text>
-  <rect x="240" y="260" width="960" height="100" rx="8" fill="#d8cfc0"/>
-  <rect x="240" y="392" width="860" height="100" rx="8" fill="#171717"/>
-  <rect x="240" y="524" width="760" height="100" rx="8" fill="#171717"/>
-  <text x="290" y="324" fill="#050505" font-family="Arial" font-size="28" font-weight="700">1. Usuario ativo</text>
-</svg>

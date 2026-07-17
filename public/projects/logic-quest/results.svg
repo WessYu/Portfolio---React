@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900">
-  <rect width="1440" height="900" fill="#070707"/>
-  <text x="112" y="148" fill="#f2f0ea" font-family="Arial" font-size="44" font-weight="700">Logic Quest / Resultados</text>
-  <circle cx="720" cy="440" r="180" fill="none" stroke="rgba(255,255,255,.14)" stroke-width="28"/>
-  <circle cx="720" cy="440" r="180" fill="none" stroke="#d8cfc0" stroke-width="28" stroke-dasharray="760 1130" transform="rotate(-90 720 440)"/>
-  <text x="646" y="464" fill="#f2f0ea" font-family="Arial" font-size="58" font-weight="700">78%</text>
-</svg>
