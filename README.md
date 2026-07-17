@@ -1,30 +1,46 @@
-# WESSYU ARCHIVE
+# WESSYU-ARQUIVO
 
-Director's cut portfolio built with React, TypeScript and Vite.
+Portfólio pessoal desenvolvido para apresentar projetos selecionados construídos durante a transição do design para o desenvolvimento front-end.
 
-The site is structured as an archive of selected work instead of a classic resume page. It focuses on:
+**Acesso:** https://portifoliowess.netlify.app
 
-- what was built
-- how each project was approached
-- how the work evolved from 2023 to 2026
-- technical decisions and product process
+## Sobre
 
-## Selected Work
+Este projeto foi pensado como um arquivo de trabalhos, não como um currículo tradicional.
 
-- Receitas
-- DevMatch
-- Logic Quest
-- HELENA
-- Differenza
+Cada projeto apresenta contexto, problema, solução, decisões de implementação e resultado final.
 
-## Running Locally
+## Projetos Selecionados
+
+### Receitas
+Plataforma de receitas com autenticação, favoritos, perfil de usuário e painel administrativo.
+
+### DevMatch
+Conceito de plataforma para conexão entre desenvolvedores e contratantes.
+
+### Logic Quest
+Experiência de aprendizado inspirada em IDEs para ensino de lógica de programação.
+
+### HELENA
+Sistema administrativo focado em organização de processos e informações.
+
+### Differenza
+Redesign conceitual para salão e barbearia com foco em experiência digital premium.
+
+## Tecnologias
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+
+## Executando Localmente
 
 ```bash
 npm install
 npm run dev
 ```
-
-The app runs at `http://localhost:5173`.
 
 ## Build
 
@@ -33,9 +49,10 @@ npm run build
 npm run preview
 ```
 
-## Author
+## Contato
 
-Wesley Cruz
+GitHub: https://github.com/WessYu
 
-- GitHub: https://github.com/WessYu
-- Email: wess.c@proton.me
+LinkedIn: https://linkedin.com/in/wesleycruz
+
+Email: wess.c@proton.me
