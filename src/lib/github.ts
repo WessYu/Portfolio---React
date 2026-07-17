@@ -1,23 +1,29 @@
-import type { Repo } from '../types'
+import type { CommitItem, GitHubEvent } from '../types'
 
 const USER = 'WessYu'
-const API = `https://api.github.com/users/${USER}/repos?per_page=100&sort=updated`
+const EVENTS_API = `https://api.github.com/users/${USER}/events/public?per_page=30`
 
-export async function fetchRepos(): Promise<Repo[]> {
-  const res = await fetch(API, {
+export async function fetchRecentCommits(): Promise<CommitItem[]> {
+  const res = await fetch(EVENTS_API, {
     headers: { Accept: 'application/vnd.github+json' },
   })
 
-  if (!res.ok) throw new Error('Falha ao carregar repositórios do GitHub.')
+  if (!res.ok) throw new Error('Could not load GitHub activity.')
 
-  const data = (await res.json()) as Repo[]
+  const events = (await res.json()) as GitHubEvent[]
 
-  return data
-    .filter((repo) => !repo.fork && !repo.archived)
-    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
-}
-
-export function looksLikeVinicola(name: string) {
-  const normalized = name.toLowerCase()
-  return normalized.includes('vinic') || normalized.includes('vinicul') || normalized.includes('vinicola') || normalized.includes('vinicula')
+  return events
+    .filter((event) => event.type === 'PushEvent' && event.payload?.commits?.length)
+    .flatMap((event) =>
+      (event.payload?.commits || []).map((commit) => {
+        const repo = event.repo.name.replace(`${USER}/`, '')
+        return {
+          id: `${event.id}-${commit.sha}`,
+          message: commit.message.split('\n')[0],
+          repo,
+          url: `https://github.com/${event.repo.name}/commit/${commit.sha}`,
+        }
+      })
+    )
+    .slice(0, 6)
 }

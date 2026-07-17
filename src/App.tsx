@@ -1,180 +1,134 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Section } from './components/Section'
-import { ProjectCard } from './components/ProjectCard'
-import type { ProjectLike, Repo } from './types'
-import { fetchRepos, looksLikeVinicola } from './lib/github'
+import type { CommitItem, ProjectCase } from './types'
+import { fetchRecentCommits } from './lib/github'
 
 const LINKS = {
   github: 'https://github.com/WessYu',
   linkedin: 'https://www.linkedin.com/in/wesley-santos-cruz-b57589213/',
   email: 'mailto:wess.c@proton.me',
-  whatsapp: 'https://wa.me/5554996558313',
-  cvPT: '/Wesley_Cruz_CV_PT.pdf',
-  cvEN: '/Wesley_Cruz_CV_EN.pdf',
 }
 
-const MANUAL_PROJECTS: ProjectLike[] = [
+const PROJECTS: ProjectCase[] = [
   {
-    key: 'logic-quest',
-    title: 'Logic Quest',
-    eyebrow: 'Projeto principal',
-    description:
-      'Aplicação pensada como um projeto principal de portfólio, unindo interface gamificada, lógica de interação e experiência mais completa para mostrar evolução em front-end.',
-    note:
-      'Destaque maior por mostrar produto, raciocínio de UX, organização de componentes e uma entrega com mais personalidade do que um estudo simples.',
-    imageUrl: repoOgImage('WessYu/Logic-quest'),
-    codeUrl: 'https://github.com/WessYu/Logic-quest',
-    tags: ['Projeto principal', 'React', 'Lógica', 'UX gamificada'],
+    id: 'receitas',
+    number: '001',
+    title: 'Receitas',
+    year: '2026',
+    image: '/projects/receitas/home.png',
+    screens: ['/projects/receitas/home.png', '/projects/receitas/library.png', '/projects/receitas/recipe.png', '/projects/receitas/admin.png'],
+    repository: 'https://github.com/WessYu/Receitas',
+    summary: 'Recipe platform built with Next.js, authentication and PostgreSQL.',
+    context: 'A cooking product created to organize recipes, discovery, user accounts and admin publishing in one complete web experience.',
+    challenge: 'Move beyond a static recipe catalog and build the foundations of a real product: identity, protected areas, content management and responsive browsing.',
+    solution: 'The platform was structured around recipe discovery, saved content, admin flows, server actions and a database-backed content model.',
+    decisions: ['Authentication as product infrastructure', 'PostgreSQL data model for recipes and users', 'Admin publishing flow', 'Mobile-first recipe reading'],
+    process: ['Initial product map', 'Library and recipe wireframes', 'Next.js implementation', 'Admin-ready final version'],
+    architecture: ['Next.js frontend', 'Server actions and API routes', 'Prisma', 'PostgreSQL'],
   },
   {
-    key: 'nocturna-atelier',
-    title: 'Nocturna Atelier',
-    eyebrow: 'Marca autoral',
-    description:
-      'Experiência visual com estética escura, elegante e editorial, criada para transmitir presença de marca e uma navegação mais refinada.',
-    note:
-      'Case forte para mostrar direção visual, atmosfera premium e cuidado com identidade, tipografia e composição.',
-    imageUrl: repoOgImage('WessYu/Nocturna-Atelier'),
-    codeUrl: 'https://github.com/WessYu/Nocturna-Atelier',
-    tags: ['Branding', 'Dark UI', 'Editorial', 'Front-end'],
+    id: 'vinicola',
+    number: '002',
+    title: 'Vinicola Serra Dourada',
+    year: '2025',
+    image: '/projects/vinicola.png',
+    screens: ['/projects/vinicola.png', '/covers/vinicola.png'],
+    repository: 'https://github.com/WessYu/vinicola-serra-dourada-main',
+    summary: 'Premium wine storefront with catalog, cart behavior and a stronger brand system.',
+    context: 'A commercial interface for a winery brand that needed to feel more mature than a generic institutional page.',
+    challenge: 'Present products, club logic and brand trust without making the experience look like a template.',
+    solution: 'The project uses a darker editorial surface, product-centered sections, structured catalog data and local API behavior.',
+    decisions: ['Real product browsing instead of decorative sections', 'Catalog-first information architecture', 'Static host adaptation', 'Brand tone aligned with premium retail'],
+    process: ['Brand direction', 'Catalog structure', 'React/Vite build', 'Static deployment preparation'],
+    architecture: ['React frontend', 'Local JSON API', 'Product data', 'Static build'],
   },
   {
-    key: 'landing',
-    title: 'Landing Page',
-    eyebrow: 'Conversão',
-    description: 'Estrutura pensada para comunicar valor rápido, reforçar confiança e conduzir o usuário para a ação principal.',
-    note: 'Trabalho com blocos bem definidos, CTA forte e leitura objetiva.',
-    imageUrl: '/projects/landing.png',
-    codeUrl: 'https://github.com/WessYu',
-    tags: ['CTA', 'Performance', 'UI responsiva'],
+    id: 'turismo',
+    number: '003',
+    title: 'Turismo',
+    year: '2024',
+    image: '/projects/turismo.png',
+    screens: ['/projects/turismo.png'],
+    repository: 'https://github.com/WessYu',
+    summary: 'Travel interface focused on imagery, destination hierarchy and fast visual scanning.',
+    context: 'A visual travel project built to practice editorial composition and destination-focused browsing.',
+    challenge: 'Use large media and clear hierarchy without losing readability across smaller screens.',
+    solution: 'A compact navigation rhythm, destination sections and image-led layout give the page an immediate subject.',
+    decisions: ['Large destination imagery', 'Simple responsive grid', 'Readable contrast over media', 'Travel-first page rhythm'],
+    process: ['Mood reference', 'Destination layout', 'Responsive build', 'Final visual pass'],
+    architecture: ['Frontend', 'Static content', 'Responsive CSS'],
   },
   {
-    key: 'vinicola',
-    title: 'Vinícola',
-    eyebrow: 'Institucional premium',
-    description: 'Projeto com pegada mais sofisticada, explorando imagem, tipografia e organização de conteúdo para valorizar a marca.',
-    note: 'Case ideal para mostrar direção visual mais madura e acabamento refinado.',
-    imageUrl: '/projects/vinicola.png',
-    codeUrl: 'https://github.com/WessYu',
-    tags: ['Branding', 'Institucional', 'Estética'],
+    id: 'travelgram',
+    number: '004',
+    title: 'Travelgram',
+    year: '2024',
+    image: '/projects/travelgram.png',
+    screens: ['/projects/travelgram.png'],
+    repository: 'https://github.com/WessYu/Travelgram',
+    summary: 'Social travel profile interface with attention to spacing, image rhythm and UI clarity.',
+    context: 'A study around social product surfaces, visual identity and grid composition.',
+    challenge: 'Make a simple profile feel designed, not assembled, using only spacing, hierarchy and media.',
+    solution: 'The screen treats photography as the main content and keeps metadata quiet, readable and consistent.',
+    decisions: ['Image grid as primary content', 'Profile data kept restrained', 'Consistent spacing system', 'No unnecessary decoration'],
+    process: ['Reference study', 'Profile wireframe', 'CSS layout', 'Final responsive version'],
+    architecture: ['HTML', 'CSS', 'Static assets'],
   },
   {
-    key: 'todo',
+    id: 'todo',
+    number: '005',
     title: 'To-Do App',
-    eyebrow: 'Produto funcional',
-    description: 'Aplicação de tarefas com foco em produtividade, fluxo simples e clareza para o usuário acompanhar o que importa.',
-    note: 'Une interface limpa com lógica prática do dia a dia.',
-    imageUrl: '/projects/todo.png',
-    demoUrl: 'https://studyflowkanban.netlify.app/',
-    ctaLabel: 'Ver demo',
-    codeUrl: 'https://github.com/WessYu',
-    tags: ['App web', 'Produtividade', 'Deploy'],
+    year: '2023',
+    image: '/projects/todo.png',
+    screens: ['/projects/todo.png', '/projects/landing.png', '/projects/imc.png'],
+    repository: 'https://github.com/WessYu',
+    demo: 'https://studyflowkanban.netlify.app/',
+    summary: 'Productivity interface for tasks, habits and everyday organization.',
+    context: 'An early product exercise built around practical interaction instead of a static page.',
+    challenge: 'Turn simple task management into a clear, repeatable workflow that still feels light.',
+    solution: 'The app organizes states, repeated actions and persistent visual grouping so the user can return daily.',
+    decisions: ['Task state clarity', 'Local persistence strategy', 'Compact responsive controls', 'Small product loops'],
+    process: ['Initial idea', 'Task flow wireframe', 'Interaction build', 'Published version'],
+    architecture: ['Frontend', 'State handling', 'Local storage', 'Static deploy'],
   },
 ]
 
-const SKILL_GROUPS = [
-  {
-    title: 'Front-end',
-    description: 'Interfaces modernas, reutilizáveis e responsivas com foco em acabamento visual.',
-    items: ['React', 'TypeScript', 'JavaScript ES6+', 'HTML5', 'CSS3'],
-  },
-  {
-    title: 'Back-end e dados',
-    description: 'Base para integrar interfaces com APIs e persistência de informação.',
-    items: ['Node.js', 'Express', 'MySQL', 'PostgreSQL'],
-  },
-  {
-    title: 'Fluxo de trabalho',
-    description: 'Ferramentas para prototipar, versionar e transformar ideia em entrega real.',
-    items: ['Git', 'GitHub', 'Figma', 'VS Code', 'Photoshop'],
-  },
+const EVOLUTION = [
+  { year: '2023', items: ['HTML', 'CSS', 'First complete projects'] },
+  { year: '2024', items: ['JavaScript', 'React', 'Interface composition'] },
+  { year: '2025', items: ['TypeScript', 'Full stack thinking', 'Product structure'] },
+  { year: '2026', items: ['Next.js', 'Prisma', 'PostgreSQL'] },
 ]
 
-const PRINCIPLES = [
-  {
-    title: 'Visual com propósito',
-    text: 'Não busco só “deixar bonito”. Cada bloco precisa guiar leitura, reforçar mensagem e sustentar a experiência.',
-  },
-  {
-    title: 'Código que cresce bem',
-    text: 'Prefiro componentes claros, estilos consistentes e decisões que facilitem evolução sem virar bagunça.',
-  },
-  {
-    title: 'Responsividade de verdade',
-    text: 'A experiência precisa continuar forte no celular, no notebook e em telas maiores, sem improviso.',
-  },
+const FALLBACK_COMMITS: CommitItem[] = [
+  { id: 'fallback-1', message: 'Improve authentication flow', repo: 'Receitas', url: LINKS.github },
+  { id: 'fallback-2', message: 'Fix mobile navigation', repo: 'Receitas', url: LINKS.github },
+  { id: 'fallback-3', message: 'Refactor recipe filters', repo: 'Receitas', url: LINKS.github },
 ]
-
-function normalize(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]/g, '')
-}
-
-function pickLocalCover(repoName: string) {
-  const normalized = repoName.toLowerCase().replace(/\s+/g, '')
-  if (looksLikeVinicola(repoName)) return '/projects/vinicola.png'
-
-  const rules: Array<[RegExp, string]> = [
-    [/todo|to-?do|todolist|task/, '/projects/todo.png'],
-    [/landing|lp|landingpage/, '/projects/landing.png'],
-    [/imc|bmi|calculadora/, '/projects/imc.png'],
-  ]
-
-  for (const [regex, image] of rules) {
-    if (regex.test(normalized)) return image
-  }
-
-  return null
-}
-
-function repoOgImage(fullName: string) {
-  return `https://opengraph.githubassets.com/wesley/${fullName}`
-}
-
-function repoToProject(repo: Repo): ProjectLike {
-  const demo = repo.homepage && repo.homepage.trim() ? repo.homepage.trim() : null
-  const updatedAt = new Date(repo.updated_at).toLocaleDateString('pt-BR')
-  const localCover = pickLocalCover(repo.name)
-
-  return {
-    key: repo.full_name,
-    title: repo.name,
-    eyebrow: demo ? 'Deploy publicado' : 'GitHub',
-    description: repo.description || 'Projeto publicado no GitHub com foco em prática, estudo e evolução contínua.',
-    note: demo ? 'Este repositório possui uma versão pública disponível para navegação.' : 'Código aberto disponível para consulta no GitHub.',
-    imageUrl: localCover || repoOgImage(repo.full_name),
-    codeUrl: repo.html_url,
-    demoUrl: demo || undefined,
-    ctaLabel: demo ? 'Abrir projeto' : undefined,
-    tags: [repo.language || 'Código', demo ? 'Deploy' : 'Open source'],
-    updatedAt,
-  }
-}
 
 export default function App() {
-  const [projects, setProjects] = useState<ProjectLike[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [cvOpen, setCvOpen] = useState(false)
-  const cvRef = useRef<HTMLDivElement | null>(null)
+  const [activeId, setActiveId] = useState(PROJECTS[0].id)
+  const [commits, setCommits] = useState<CommitItem[]>(FALLBACK_COMMITS)
+  const [commitStatus, setCommitStatus] = useState<'loading' | 'ready' | 'fallback'>('loading')
+  const caseRef = useRef<HTMLElement | null>(null)
+
+  const activeProject = useMemo(() => PROJECTS.find((project) => project.id === activeId) || PROJECTS[0], [activeId])
 
   useEffect(() => {
     let mounted = true
 
-    ;(async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const repos = await fetchRepos()
+    fetchRecentCommits()
+      .then((items) => {
         if (!mounted) return
-        setProjects(repos.map(repoToProject))
-      } catch (e) {
-        if (!mounted) return
-        setError(e instanceof Error ? e.message : 'Erro ao carregar projetos.')
-      } finally {
-        if (!mounted) return
-        setLoading(false)
-      }
-    })()
+        if (items.length) {
+          setCommits(items)
+          setCommitStatus('ready')
+        } else {
+          setCommitStatus('fallback')
+        }
+      })
+      .catch(() => {
+        if (mounted) setCommitStatus('fallback')
+      })
 
     return () => {
       mounted = false
@@ -182,325 +136,215 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!cvOpen) return
-      const element = cvRef.current
-      if (!element) return
-      if (e.target instanceof Node && !element.contains(e.target)) setCvOpen(false)
-    }
-
-    function onKey(e: KeyboardEvent) {
-      if (e.key === 'Escape') setCvOpen(false)
-    }
-
-    document.addEventListener('mousedown', onDocClick)
-    document.addEventListener('keydown', onKey)
-    return () => {
-      document.removeEventListener('mousedown', onDocClick)
-      document.removeEventListener('keydown', onKey)
-    }
-  }, [cvOpen])
-
-  useEffect(() => {
-    const items = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
-    if (!items.length) return
+    const revealItems = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'))
+    const parallaxItems = Array.from(document.querySelectorAll<HTMLElement>('[data-parallax]'))
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible')
-            observer.unobserve(entry.target)
-          }
+          if (entry.isIntersecting) entry.target.classList.add('is-visible')
         })
       },
-      { threshold: 0.18, rootMargin: '0px 0px -60px 0px' }
+      { threshold: 0.16, rootMargin: '0px 0px -80px 0px' }
     )
 
-    items.forEach((item) => observer.observe(item))
-    return () => observer.disconnect()
-  }, [loading])
+    revealItems.forEach((item) => observer.observe(item))
 
-  const liveProjects = useMemo(() => {
-    const featuredKeys = new Set(MANUAL_PROJECTS.flatMap((project) => [normalize(project.key), normalize(project.title)]))
-    return projects.filter((project) => !featuredKeys.has(normalize(project.title))).slice(0, 6)
-  }, [projects])
+    function onScroll() {
+      const y = window.scrollY
+      parallaxItems.forEach((item) => {
+        const speed = Number(item.dataset.speed || 0.04)
+        item.style.setProperty('--parallax-y', `${Math.round(y * speed)}px`)
+      })
+    }
 
-  const stats = useMemo(
-    () => [
-      { value: `${MANUAL_PROJECTS.length}+`, label: 'cases com curadoria visual' },
-      { value: projects.length ? `${projects.length}+` : 'GitHub', label: 'repositórios conectados ao perfil' },
-      { value: 'UI-first', label: 'foco em clareza, ritmo e presença visual' },
-    ],
-    [projects.length]
-  )
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
+
+  function openCase(projectId: string) {
+    setActiveId(projectId)
+    window.setTimeout(() => caseRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40)
+  }
 
   return (
-    <div className="pageShell">
-      <div className="ambient ambientOne" aria-hidden="true" />
-      <div className="ambient ambientTwo" aria-hidden="true" />
-      <div className="ambientGrid" aria-hidden="true" />
+    <main className="archiveShell" id="top">
+      <nav className="archiveNav" aria-label="Primary navigation">
+        <a href="#top">WESSYU ARCHIVE</a>
+        <div>
+          <a href="#work">Work</a>
+          <a href="#case">Case</a>
+          <a href="#evolution">Evolution</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
 
-      <header className="nav">
-        <a className="brand" href="#top" aria-label="Ir para o topo">
-          <span className="brandMark">WC</span>
-          <span className="brandText">Wesley Cruz</span>
-        </a>
+      <section className="intro" aria-labelledby="intro-title">
+        <p className="cornerMark">WESSYU ARCHIVE</p>
+        <div className="introCenter" data-reveal>
+          <h1 id="intro-title">
+            SELECTED WORK
+            <span>2023 - 2026</span>
+          </h1>
+          <p>Five projects. Three years. One transition from design to software.</p>
+        </div>
+        <p className="introRole">Digital Product Builder</p>
+      </section>
 
-        <nav className="navLinks" aria-label="Navegação principal">
-          <a href="#projects">Projetos</a>
-          <a href="#about">Sobre</a>
-          <a href="#skills">Stack</a>
-          <a href="#contact">Contato</a>
-        </nav>
-
-        <a className="navCta" href="#contact">
-          Vamos conversar
-        </a>
-      </header>
-
-      <main id="top" className="container">
-        <section className="hero">
-          <div className="heroCopy" data-reveal>
-            <p className="eyebrowLine">Portfólio front-end</p>
-            <h1>Interfaces com presença visual, código limpo e experiência pensada nos detalhes.</h1>
-            <p className="heroLead">
-              Sou Wesley dos Santos Cruz, desenvolvedor front-end focado em transformar ideias em páginas modernas,
-              responsivas e profissionais. Gosto de unir estética, clareza e boa execução para criar experiências que
-              passam confiança logo no primeiro olhar.
-            </p>
-
-            <div className="heroTags" aria-label="Especialidades">
-              <span>React</span>
-              <span>TypeScript</span>
-              <span>UI responsiva</span>
-              <span>Integração com APIs</span>
+      <section className="work" id="work" aria-label="Selected projects">
+        {PROJECTS.map((project) => (
+          <article className="projectScene" key={project.id}>
+            <button className="projectImageButton" type="button" onClick={() => openCase(project.id)} aria-label={`Open ${project.title} case study`}>
+              <img src={project.image} alt={`${project.title} project screen`} data-parallax data-speed="0.025" />
+            </button>
+            <div className="projectLabel" data-reveal>
+              <span>
+                {project.number} / {project.year}
+              </span>
+              <h2>{project.title}</h2>
+              <p>{project.summary}</p>
             </div>
+          </article>
+        ))}
+      </section>
 
-            <div className="ctaRow">
-              <a className="btn primary" href="#projects">
-                Ver projetos
-              </a>
-              <a className="btn" href={LINKS.github} target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a className="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
+      <section className="caseStudy" id="case" ref={caseRef} aria-labelledby="case-title">
+        <div className="caseHeader" data-reveal>
+          <div>
+            <p className="metaLine">{activeProject.number} / CASE STUDY</p>
+            <h2 id="case-title">{activeProject.title}</h2>
+          </div>
+          <p>{activeProject.summary}</p>
+        </div>
 
-              <div className="cvWrap" ref={cvRef}>
-                <button
-                  className="btn"
-                  type="button"
-                  onClick={() => setCvOpen((value) => !value)}
-                  aria-haspopup="menu"
-                  aria-expanded={cvOpen}
-                >
-                  Currículo
-                </button>
-                {cvOpen ? (
-                  <div className="cvMenu" role="menu">
-                    <a className="cvItem" role="menuitem" href={LINKS.cvPT} target="_blank" rel="noreferrer">
-                      Baixar em português
-                    </a>
-                    <a className="cvItem" role="menuitem" href={LINKS.cvEN} target="_blank" rel="noreferrer">
-                      Baixar em inglês
-                    </a>
-                  </div>
-                ) : null}
+        <div className="caseHero" data-reveal>
+          <img src={activeProject.image} alt={`${activeProject.title} expanded project screen`} />
+        </div>
+
+        <div className="caseGrid">
+          <CaseBlock title="Context" text={activeProject.context} />
+          <CaseBlock title="Challenge" text={activeProject.challenge} />
+          <CaseBlock title="Solution" text={activeProject.solution} />
+        </div>
+
+        <div className="architecture" data-reveal>
+          <p className="metaLine">Architecture</p>
+          <div className="architectureFlow">
+            {activeProject.architecture.map((item, index) => (
+              <div className="architectureStep" key={item}>
+                <span>{item}</span>
+                {index < activeProject.architecture.length - 1 ? <b aria-hidden="true">v</b> : null}
               </div>
-
-              <a className="btn accent" href={LINKS.whatsapp} target="_blank" rel="noreferrer">
-                WhatsApp
-              </a>
-            </div>
-
-            <div className="heroStats">
-              {stats.map((stat) => (
-                <div key={stat.label} className="statCard">
-                  <strong>{stat.value}</strong>
-                  <span>{stat.label}</span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
+        </div>
 
-          <div className="heroVisual" data-reveal>
-            <div className="portraitFrame">
-              <div className="orbit orbitOne" aria-hidden="true" />
-              <div className="orbit orbitTwo" aria-hidden="true" />
-              <img src="/profile.jpg" alt="Wesley Cruz" />
-              <div className="floatingBadge badgeTop">Disponível para projetos</div>
-              <div className="floatingBadge badgeBottom">UI limpa + execução sólida</div>
-            </div>
-
-            <div className="heroPanel">
-              <p className="panelEyebrow">Como eu trabalho</p>
-              <ul className="heroChecklist">
-                <li>Layout com hierarquia visual clara e acabamento forte.</li>
-                <li>Experiência responsiva pensada desde o início.</li>
-                <li>Componentes organizados para crescer sem complicar.</li>
-              </ul>
-            </div>
-          </div>
+        <section className="screens" aria-label={`${activeProject.title} screens`}>
+          {activeProject.screens.map((screen, index) => (
+            <img key={`${screen}-${index}`} src={screen} alt={`${activeProject.title} screen ${index + 1}`} data-reveal />
+          ))}
         </section>
 
-        <Section
-          id="projects"
-          title="Projetos em destaque"
-          subtitle="Seleção com foco em interface, organização visual e experiências que comunicam valor."
-        >
-          <div className="grid featured">
-            {MANUAL_PROJECTS.map((project) => (
-              <ProjectCard key={project.key} p={project} featured />
-            ))}
-          </div>
+        <div className="decisionProcess">
+          <ListBlock title="Decisions" items={activeProject.decisions} />
+          <ListBlock title="Process" items={activeProject.process} />
+        </div>
 
-          <div className="subSectionHead" data-reveal>
-            <div>
-              <p className="sectionMiniEyebrow">GitHub ao vivo</p>
-              <h3 className="subSectionTitle">Mais estudos e experimentos recentes</h3>
-            </div>
-            <p className="subSectionText">
-              Esta área puxa repositórios reais do meu perfil para manter o portfólio vivo e sempre conectado com a
-              evolução do trabalho.
-            </p>
-          </div>
-
-          {loading ? (
-            <div className="grid">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="card skeleton" />
-              ))}
-            </div>
-          ) : error ? (
-            <div className="notice" data-reveal>
-              <p>{error}</p>
-              <a className="btn" href={LINKS.github} target="_blank" rel="noreferrer">
-                Ver perfil no GitHub
-              </a>
-            </div>
-          ) : liveProjects.length ? (
-            <div className="grid">
-              {liveProjects.map((project) => (
-                <ProjectCard key={project.key} p={project} />
-              ))}
-            </div>
-          ) : (
-            <div className="notice" data-reveal>
-              <p>Os projetos dinâmicos não apareceram desta vez, mas os destaques acima já mostram bem meu estilo de trabalho.</p>
-            </div>
-          )}
-        </Section>
-
-        <Section
-          id="about"
-          title="Sobre mim"
-          subtitle="Busco entregar interfaces modernas, confiáveis e com uma aparência realmente profissional."
-        >
-          <div className="aboutLayout">
-            <div className="aboutStory" data-reveal>
-              <p>
-                Estou consolidando minha trajetória em desenvolvimento front-end com base em React, JavaScript moderno e
-                construção de interfaces responsivas. Meu objetivo é criar produtos que pareçam bem resolvidos, tanto no
-                visual quanto na organização do código.
-              </p>
-              <p>
-                Valorizo páginas com identidade, ritmo de leitura e decisões consistentes. Gosto de observar onde a
-                interface pode transmitir mais confiança, mais clareza e mais qualidade sem depender de exagero.
-              </p>
-            </div>
-
-            <div className="miniGrid">
-              <div className="miniCard" data-reveal>
-                <p className="miniTitle">Base</p>
-                <p className="miniValue">Caxias do Sul, RS</p>
-              </div>
-              <div className="miniCard" data-reveal>
-                <p className="miniTitle">Contato</p>
-                <a className="miniValue link" href={LINKS.email}>
-                  wess.c@proton.me
-                </a>
-              </div>
-              <div className="miniCard" data-reveal>
-                <p className="miniTitle">Foco</p>
-                <p className="miniValue">Landing pages, sites institucionais e interfaces web</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="principlesGrid">
-            {PRINCIPLES.map((principle) => (
-              <article key={principle.title} className="principleCard" data-reveal>
-                <h3>{principle.title}</h3>
-                <p>{principle.text}</p>
-              </article>
-            ))}
-          </div>
-        </Section>
-
-        <Section
-          id="skills"
-          title="Stack e processo"
-          subtitle="Ferramentas e áreas que uso para transformar conceito em experiência digital."
-        >
-          <div className="skillGrid">
-            {SKILL_GROUPS.map((group) => (
-              <article key={group.title} className="skillCard" data-reveal>
-                <p className="miniTitle">{group.title}</p>
-                <p className="skillDescription">{group.description}</p>
-                <div className="chips">
-                  {group.items.map((item) => (
-                    <span key={item} className="chip">
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </article>
-            ))}
-          </div>
-        </Section>
-
-        <Section
-          id="contact"
-          title="Vamos construir algo forte?"
-          subtitle="Se você precisa de um site, uma landing page ou uma interface com mais presença visual, podemos conversar."
-        >
-          <div className="contactPanel" data-reveal>
-            <div className="contactIntro">
-              <p className="sectionMiniEyebrow">Contato direto</p>
-              <h3>Aberto para oportunidades, freelas e projetos que pedem um visual mais profissional.</h3>
-              <div className="contactLinks">
-                <a className="bigLink" href={LINKS.email}>
-                  wess.c@proton.me
-                </a>
-                <a className="bigLink" href={LINKS.whatsapp} target="_blank" rel="noreferrer">
-                  +55 (54) 99655-8313
-                </a>
-              </div>
-            </div>
-
-            <div className="contactActions">
-              <a className="btn" href={LINKS.github} target="_blank" rel="noreferrer">
-                GitHub
-              </a>
-              <a className="btn" href={LINKS.linkedin} target="_blank" rel="noreferrer">
-                LinkedIn
-              </a>
-              <a className="btn primary" href={LINKS.whatsapp} target="_blank" rel="noreferrer">
-                Chamar no WhatsApp
-              </a>
-            </div>
-          </div>
-        </Section>
-
-        <footer className="footer">
-          <span>© {new Date().getFullYear()} Wesley Cruz</span>
-          <a href={LINKS.github} target="_blank" rel="noreferrer">
-            github.com/WessYu
+        <div className="caseActions" data-reveal>
+          <a href={activeProject.repository} target="_blank" rel="noreferrer">
+            Repository
           </a>
-        </footer>
-      </main>
-    </div>
+          {activeProject.demo ? (
+            <a href={activeProject.demo} target="_blank" rel="noreferrer">
+              Live project
+            </a>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="evolution" id="evolution" aria-labelledby="evolution-title">
+        <div className="sectionTitle" data-reveal>
+          <p className="metaLine">Evolution</p>
+          <h2 id="evolution-title">From visual studies to product systems.</h2>
+        </div>
+        <div className="evolutionGrid">
+          {EVOLUTION.map((period) => (
+            <article className="yearBlock" key={period.year} data-reveal>
+              <h3>{period.year}</h3>
+              {period.items.map((item) => (
+                <p key={item}>{item}</p>
+              ))}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="person" aria-labelledby="person-title">
+        <div className="sectionTitle" data-reveal>
+          <p className="metaLine">Person</p>
+          <h2 id="person-title">Designer turned developer.</h2>
+        </div>
+        <p data-reveal>
+          Focused on digital products, interfaces and user experience.
+          <br />
+          Based in Brazil.
+        </p>
+      </section>
+
+      <section className="commits" aria-labelledby="commits-title">
+        <div className="sectionTitle" data-reveal>
+          <p className="metaLine">Latest commits</p>
+          <h2 id="commits-title">Recent activity, pulled automatically.</h2>
+        </div>
+        <div className="commitList" aria-busy={commitStatus === 'loading'}>
+          {commits.map((commit) => (
+            <a href={commit.url} target="_blank" rel="noreferrer" key={commit.id} data-reveal>
+              <span>{commit.message}</span>
+              <small>{commit.repo}</small>
+            </a>
+          ))}
+        </div>
+        {commitStatus === 'fallback' ? <p className="quietNote">Showing curated examples because GitHub activity could not be loaded.</p> : null}
+      </section>
+
+      <footer className="contact" id="contact">
+        <p>Interested in working together?</p>
+        <div>
+          <a href={LINKS.github} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href={LINKS.linkedin} target="_blank" rel="noreferrer">
+            LinkedIn
+          </a>
+          <a href={LINKS.email}>Email</a>
+        </div>
+      </footer>
+    </main>
+  )
+}
+
+function CaseBlock({ title, text }: { title: string; text: string }) {
+  return (
+    <article className="caseBlock" data-reveal>
+      <h3>{title}</h3>
+      <p>{text}</p>
+    </article>
+  )
+}
+
+function ListBlock({ title, items }: { title: string; items: string[] }) {
+  return (
+    <article className="listBlock" data-reveal>
+      <h3>{title}</h3>
+      <div>
+        {items.map((item) => (
+          <p key={item}>{item}</p>
+        ))}
+      </div>
+    </article>
   )
 }

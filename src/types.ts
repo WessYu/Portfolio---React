@@ -1,28 +1,39 @@
-export type Repo = {
-  id: number
-  name: string
-  full_name: string
-  html_url: string
-  description: string | null
-  homepage: string | null
-  language: string | null
-  stargazers_count: number
-  forks_count: number
-  updated_at: string
-  fork: boolean
-  archived: boolean
+export type GitHubEvent = {
+  id: string
+  type: string
+  repo: {
+    name: string
+  }
+  payload?: {
+    commits?: Array<{
+      sha: string
+      message: string
+      url?: string
+    }>
+  }
 }
 
-export type ProjectLike = {
-  key: string
+export type CommitItem = {
+  id: string
+  message: string
+  repo: string
+  url: string
+}
+
+export type ProjectCase = {
+  id: string
+  number: string
   title: string
-  description: string
-  imageUrl: string
-  codeUrl: string
-  demoUrl?: string | null
-  tags?: string[]
-  updatedAt?: string
-  eyebrow?: string
-  note?: string
-  ctaLabel?: string
+  year: string
+  image: string
+  screens: string[]
+  repository: string
+  demo?: string
+  summary: string
+  context: string
+  challenge: string
+  solution: string
+  decisions: string[]
+  process: string[]
+  architecture: string[]
 }

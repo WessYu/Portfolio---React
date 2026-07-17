@@ -1,45 +1,41 @@
-# Wesley Cruz — Portfólio Front-end
+# WESSYU ARCHIVE
 
-Portfólio pessoal desenvolvido com React, TypeScript e Vite para reunir meus principais projetos e informações profissionais.
+Director's cut portfolio built with React, TypeScript and Vite.
 
-## Projetos em destaque
+The site is structured as an archive of selected work instead of a classic resume page. It focuses on:
 
-- [Receitas](https://github.com/WessYu/Receitas) — aplicação full stack com autenticação, banco de dados e painel administrativo
-- [ToDo](https://github.com/WessYu/ToDo) — aplicação de produtividade com tarefas, hábitos e diário
-- [StudyFlow](https://github.com/WessYu/studyflow) — quadro de estudos com filtros e persistência local
-- [Vinícola Serra Dourada](https://github.com/WessYu/vinicola-serra-dourada-main) — landing page com catálogo e carrinho
-- [Travelgram](https://github.com/WessYu/Travelgram) — interface inspirada em uma rede social de viagens
+- what was built
+- how each project was approached
+- how the work evolved from 2023 to 2026
+- recent GitHub activity pulled automatically
 
-## Tecnologias
+## Selected Work
 
-- React
-- TypeScript
-- Vite
-- CSS
-- Git e GitHub
+- Receitas
+- Vinicola Serra Dourada
+- Turismo
+- Travelgram
+- To-Do App
 
-## Executando o projeto
+## Running Locally
 
 ```bash
-git clone https://github.com/WessYu/Portfolio---React.git
-cd Portfolio---React
 npm install
 npm run dev
 ```
 
-A aplicação ficará disponível em `http://localhost:5173`.
+The app runs at `http://localhost:5173`.
 
-## Scripts
+## Build
 
 ```bash
-npm run dev
 npm run build
 npm run preview
 ```
 
-## Autor
+## Author
 
 Wesley Cruz
 
-- GitHub: [@WessYu](https://github.com/WessYu)
+- GitHub: https://github.com/WessYu
 - Email: wess.c@proton.me
