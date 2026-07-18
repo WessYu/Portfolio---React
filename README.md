@@ -33,11 +33,9 @@ Redesign conceitual para salão e barbearia com foco em experiência digital pre
 
 ## Tecnologias
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Framer Motion
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,ts,js,nextjs,html,css,tailwind,vite,nodejs,postgres,prisma,git,github,figma" />
+</p>
 
 ## Executando Localmente
 
