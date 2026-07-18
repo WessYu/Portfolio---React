@@ -390,8 +390,10 @@ export default function App() {
 
     revealItems.forEach((item) => observer.observe(item))
 
-    function onScroll() {
-      if (isSmallScreen) return
+    let scrollFrame = 0
+
+    function updateParallax() {
+      scrollFrame = 0
       const y = window.scrollY
       parallaxItems.forEach((item) => {
         const speed = Number(item.dataset.speed || 0.02)
@@ -399,11 +401,20 @@ export default function App() {
       })
     }
 
-    onScroll()
-    window.addEventListener('scroll', onScroll, { passive: true })
+    function onScroll() {
+      if (scrollFrame || isSmallScreen) return
+      scrollFrame = window.requestAnimationFrame(updateParallax)
+    }
+
+    if (!isSmallScreen) {
+      updateParallax()
+      window.addEventListener('scroll', onScroll, { passive: true })
+    }
+
     return () => {
       observer.disconnect()
-      window.removeEventListener('scroll', onScroll)
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame)
+      if (!isSmallScreen) window.removeEventListener('scroll', onScroll)
     }
   }, [])
 

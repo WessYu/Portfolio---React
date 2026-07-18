@@ -66,6 +66,8 @@ export function initProjectReel() {
   initAttempts = 0
   reel.classList.add('projectReel')
 
+  const compactViewport = window.matchMedia('(max-width: 720px)').matches
+  const useDesktopControls = !compactViewport
   const generatedNodes: HTMLElement[] = []
   const nav = document.createElement('aside')
   nav.className = 'projectReelNav'
@@ -102,21 +104,26 @@ export function initProjectReel() {
     scene.dataset.reelIndex = projectNumber
     scene.id = `project-${projectNumber}`
 
-    const topMeta = document.createElement('div')
-    topMeta.className = 'projectReelTopMeta'
-    topMeta.setAttribute('aria-hidden', 'true')
-    topMeta.innerHTML = `<em>${year}</em><span>${detail.type}</span><small>${detail.role}</small>`
+    if (useDesktopControls) {
+      const topMeta = document.createElement('div')
+      topMeta.className = 'projectReelTopMeta'
+      topMeta.setAttribute('aria-hidden', 'true')
+      topMeta.innerHTML = `<em>${year}</em><span>${detail.type}</span><small>${detail.role}</small>`
 
-    const sideInfo = document.createElement('aside')
-    sideInfo.className = 'projectReelSideInfo'
-    sideInfo.setAttribute('aria-hidden', 'true')
-    sideInfo.innerHTML = `
-      <p>DESTAQUES</p>
-      <ol>
-        ${detail.highlights.map((item, itemIndex) => `<li><b>${String(itemIndex + 1).padStart(2, '0')}</b><span>${item}</span></li>`).join('')}
-      </ol>
-      <div>${detail.stack.map((item) => `<span>${item}</span>`).join('')}</div>
-    `
+      const sideInfo = document.createElement('aside')
+      sideInfo.className = 'projectReelSideInfo'
+      sideInfo.setAttribute('aria-hidden', 'true')
+      sideInfo.innerHTML = `
+        <p>DESTAQUES</p>
+        <ol>
+          ${detail.highlights.map((item, itemIndex) => `<li><b>${String(itemIndex + 1).padStart(2, '0')}</b><span>${item}</span></li>`).join('')}
+        </ol>
+        <div>${detail.stack.map((item) => `<span>${item}</span>`).join('')}</div>
+      `
+
+      scene.append(topMeta, sideInfo)
+      generatedNodes.push(topMeta, sideInfo)
+    }
 
     const explore = document.createElement('button')
     explore.type = 'button'
@@ -125,15 +132,15 @@ export function initProjectReel() {
     explore.innerHTML = '<span>EXPLORAR</span><b aria-hidden="true">→</b>'
     explore.addEventListener('click', () => imageButton?.click())
 
-    scene.append(topMeta, sideInfo, explore)
-    generatedNodes.push(topMeta, sideInfo, explore)
+    scene.append(explore)
+    generatedNodes.push(explore)
 
     const button = document.createElement('button')
     button.type = 'button'
     button.setAttribute('aria-label', `Ir para ${projectTitle}`)
     button.innerHTML = `<span>${projectNumber}</span><i aria-hidden="true"></i>`
     button.addEventListener('click', () => goTo(index))
-    controls.appendChild(button)
+    if (useDesktopControls) controls.appendChild(button)
 
     return button
   })
@@ -142,19 +149,25 @@ export function initProjectReel() {
   hint.className = 'projectReelHint'
   hint.textContent = 'SCROLL / SETAS'
 
-  nav.append(counter, controls, hint)
-  document.body.appendChild(nav)
+  if (useDesktopControls) {
+    nav.append(counter, controls, hint)
+    document.body.appendChild(nav)
+  }
 
   const cursor = document.createElement('div')
-  cursor.className = 'projectReelCursor'
-  cursor.setAttribute('aria-hidden', 'true')
-  cursor.dataset.mode = 'scroll'
-  cursor.innerHTML = '<span>SCROLL</span><i></i>'
-  document.body.appendChild(cursor)
-
-  const cursorLabel = cursor.querySelector<HTMLSpanElement>('span')
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const finePointer = window.matchMedia('(pointer: fine)').matches
+  const useCursor = finePointer && useDesktopControls
+
+  if (useCursor) {
+    cursor.className = 'projectReelCursor'
+    cursor.setAttribute('aria-hidden', 'true')
+    cursor.dataset.mode = 'scroll'
+    cursor.innerHTML = '<span>SCROLL</span><i></i>'
+    document.body.appendChild(cursor)
+  }
+
+  const cursorLabel = cursor.querySelector<HTMLSpanElement>('span')
 
   let activeIndex = 0
   let frame = 0
@@ -166,11 +179,13 @@ export function initProjectReel() {
   let dragStartY: number | null = null
 
   function setCursorMode(mode: string, label: string) {
+    if (!useCursor) return
     cursor.dataset.mode = mode
     if (cursorLabel) cursorLabel.textContent = label
   }
 
   function renderCursor() {
+    if (!useCursor) return
     cursorX += (cursorTargetX - cursorX) * 0.22
     cursorY += (cursorTargetY - cursorY) * 0.22
     cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`
@@ -315,15 +330,17 @@ export function initProjectReel() {
   setActive(0)
   updateFromViewport()
 
-  if (finePointer) cursorFrame = window.requestAnimationFrame(renderCursor)
+  if (useCursor) cursorFrame = window.requestAnimationFrame(renderCursor)
 
   window.addEventListener('scroll', requestUpdate, { passive: true })
   window.addEventListener('resize', requestUpdate)
   window.addEventListener('keydown', onKeyDown)
-  window.addEventListener('pointermove', onPointerMove, { passive: true })
-  window.addEventListener('pointerdown', onPointerDown)
-  window.addEventListener('pointerup', onPointerUp)
-  window.addEventListener('pointercancel', onPointerUp)
+  if (useCursor) {
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+    window.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('pointerup', onPointerUp)
+    window.addEventListener('pointercancel', onPointerUp)
+  }
 
   cleanupProjectReel = () => {
     if (frame) window.cancelAnimationFrame(frame)
@@ -331,13 +348,15 @@ export function initProjectReel() {
     window.removeEventListener('scroll', requestUpdate)
     window.removeEventListener('resize', requestUpdate)
     window.removeEventListener('keydown', onKeyDown)
-    window.removeEventListener('pointermove', onPointerMove)
-    window.removeEventListener('pointerdown', onPointerDown)
-    window.removeEventListener('pointerup', onPointerUp)
-    window.removeEventListener('pointercancel', onPointerUp)
+    if (useCursor) {
+      window.removeEventListener('pointermove', onPointerMove)
+      window.removeEventListener('pointerdown', onPointerDown)
+      window.removeEventListener('pointerup', onPointerUp)
+      window.removeEventListener('pointercancel', onPointerUp)
+    }
     document.body.classList.remove('project-reel-in-view', 'project-reel-cursor-active')
-    nav.remove()
-    cursor.remove()
+    if (useDesktopControls) nav.remove()
+    if (useCursor) cursor.remove()
     generatedNodes.forEach((node) => node.remove())
     reel.classList.remove('projectReel')
     scenes.forEach((scene) => scene.classList.remove('is-reel-active'))
