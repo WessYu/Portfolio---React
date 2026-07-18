@@ -1,0 +1,102 @@
+.techStack {
+  width: min(var(--max), 100%);
+  margin: 0 auto;
+  padding: 112px var(--pad);
+  border-bottom: 1px solid var(--line);
+}
+
+.techGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 48px;
+}
+
+.techCard {
+  position: relative;
+  min-height: 132px;
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(145deg, rgba(255,255,255,.035), rgba(255,255,255,.012));
+  transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+}
+
+.techCard::after {
+  content: '';
+  position: absolute;
+  inset: auto -30% -70% 30%;
+  height: 120px;
+  background: radial-gradient(circle, rgba(216,207,192,.14), transparent 68%);
+  pointer-events: none;
+}
+
+.techCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  background: linear-gradient(145deg, rgba(255,255,255,.06), rgba(255,255,255,.018));
+}
+
+.techIconFrame {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f2f0ea;
+}
+
+.techIconFrame img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.techCard span {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--quiet);
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.techCard h3 {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.techCard b {
+  align-self: start;
+  color: rgba(242,240,234,.22);
+  font-size: .7rem;
+  font-weight: 800;
+}
+
+@media (max-width: 980px) {
+  .techGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .techStack {
+    padding-top: 88px;
+    padding-bottom: 88px;
+  }
+
+  .techGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .techCard {
+    min-height: 108px;
+  }
+}
