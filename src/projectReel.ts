@@ -1,5 +1,53 @@
+type ReelDetail = {
+  type: string
+  role: string
+  stack: string[]
+  highlights: string[]
+}
+
+const PROJECT_DETAILS: Record<string, ReelDetail> = {
+  receitas: {
+    type: 'PRODUTO FULL STACK',
+    role: 'DESIGN + DESENVOLVIMENTO',
+    stack: ['NEXT.JS', 'PRISMA', 'POSTGRESQL'],
+    highlights: ['AUTENTICAÇÃO', 'PAINEL ADMIN', 'BUSCA E FILTROS'],
+  },
+  devmatch: {
+    type: 'RECRUTAMENTO TECH',
+    role: 'UX + FRONT-END + DADOS',
+    stack: ['NEXT.JS', 'TYPESCRIPT', 'NEON'],
+    highlights: ['MATCHES', 'CHAT CONTEXTUAL', 'PERFIS POR PAPEL'],
+  },
+  'logic quest': {
+    type: 'EDTECH / PWA',
+    role: 'PRODUTO + INTERFACE',
+    stack: ['JAVASCRIPT', 'PWA', 'LOCALSTORAGE'],
+    highlights: ['MÓDULOS', 'CHECKPOINTS', 'PROGRESSO'],
+  },
+  helena: {
+    type: 'LEGALTECH / SERVIÇO',
+    role: 'DIREÇÃO VISUAL + DEV',
+    stack: ['HTML', 'CSS', 'PYTHON'],
+    highlights: ['PROTOCOLOS', 'FORMULÁRIOS', 'PAINEL INTERNO'],
+  },
+  differenza: {
+    type: 'REDESIGN / EXPERIÊNCIA',
+    role: 'AUDITORIA + UI + DEV',
+    stack: ['HTML', 'CSS', 'JAVASCRIPT'],
+    highlights: ['ANTES E DEPOIS', 'HIERARQUIA', 'RESPONSIVIDADE'],
+  },
+}
+
 let cleanupProjectReel: (() => void) | null = null
 let initAttempts = 0
+
+function normalizeTitle(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+}
 
 export function initProjectReel() {
   cleanupProjectReel?.()
@@ -18,6 +66,7 @@ export function initProjectReel() {
   initAttempts = 0
   reel.classList.add('projectReel')
 
+  const generatedNodes: HTMLElement[] = []
   const nav = document.createElement('aside')
   nav.className = 'projectReelNav'
   nav.setAttribute('aria-label', 'Navegação dos projetos')
@@ -37,11 +86,47 @@ export function initProjectReel() {
   controls.className = 'projectReelControls'
 
   const buttons = scenes.map((scene, index) => {
-    const projectTitle = scene.querySelector('h2')?.textContent?.trim() || `Projeto ${index + 1}`
+    const titleElement = scene.querySelector<HTMLElement>('.projectLabel h2')
+    const metaElement = scene.querySelector<HTMLElement>('.projectLabel span')
+    const imageButton = scene.querySelector<HTMLButtonElement>('.projectImageButton')
+    const projectTitle = titleElement?.textContent?.trim() || `Projeto ${index + 1}`
     const projectNumber = String(index + 1).padStart(2, '0')
+    const year = metaElement?.textContent?.match(/20\d{2}/)?.[0] || '2026'
+    const detail = PROJECT_DETAILS[normalizeTitle(projectTitle)] || {
+      type: 'PROJETO DIGITAL',
+      role: 'DESIGN + DESENVOLVIMENTO',
+      stack: ['REACT', 'TYPESCRIPT', 'CSS'],
+      highlights: ['INTERFACE', 'RESPONSIVIDADE', 'PRODUTO'],
+    }
 
     scene.dataset.reelIndex = projectNumber
     scene.id = `project-${projectNumber}`
+
+    const topMeta = document.createElement('div')
+    topMeta.className = 'projectReelTopMeta'
+    topMeta.setAttribute('aria-hidden', 'true')
+    topMeta.innerHTML = `<em>${year}</em><span>${detail.type}</span><small>${detail.role}</small>`
+
+    const sideInfo = document.createElement('aside')
+    sideInfo.className = 'projectReelSideInfo'
+    sideInfo.setAttribute('aria-hidden', 'true')
+    sideInfo.innerHTML = `
+      <p>DESTAQUES</p>
+      <ol>
+        ${detail.highlights.map((item, itemIndex) => `<li><b>${String(itemIndex + 1).padStart(2, '0')}</b><span>${item}</span></li>`).join('')}
+      </ol>
+      <div>${detail.stack.map((item) => `<span>${item}</span>`).join('')}</div>
+    `
+
+    const explore = document.createElement('button')
+    explore.type = 'button'
+    explore.className = 'projectReelExplore'
+    explore.setAttribute('aria-label', `Abrir estudo de caso ${projectTitle}`)
+    explore.innerHTML = '<span>EXPLORAR</span><b aria-hidden="true">→</b>'
+    explore.addEventListener('click', () => imageButton?.click())
+
+    scene.append(topMeta, sideInfo, explore)
+    generatedNodes.push(topMeta, sideInfo, explore)
 
     const button = document.createElement('button')
     button.type = 'button'
@@ -60,9 +145,37 @@ export function initProjectReel() {
   nav.append(counter, controls, hint)
   document.body.appendChild(nav)
 
+  const cursor = document.createElement('div')
+  cursor.className = 'projectReelCursor'
+  cursor.setAttribute('aria-hidden', 'true')
+  cursor.dataset.mode = 'scroll'
+  cursor.innerHTML = '<span>SCROLL</span><i></i>'
+  document.body.appendChild(cursor)
+
+  const cursorLabel = cursor.querySelector<HTMLSpanElement>('span')
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const finePointer = window.matchMedia('(pointer: fine)').matches
+
   let activeIndex = 0
   let frame = 0
+  let cursorFrame = 0
+  let cursorTargetX = -160
+  let cursorTargetY = -160
+  let cursorX = -160
+  let cursorY = -160
+  let dragStartY: number | null = null
+
+  function setCursorMode(mode: string, label: string) {
+    cursor.dataset.mode = mode
+    if (cursorLabel) cursorLabel.textContent = label
+  }
+
+  function renderCursor() {
+    cursorX += (cursorTargetX - cursorX) * 0.22
+    cursorY += (cursorTargetY - cursorY) * 0.22
+    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`
+    cursorFrame = window.requestAnimationFrame(renderCursor)
+  }
 
   function setActive(index: number) {
     if (index === activeIndex && scenes[index]?.classList.contains('is-reel-active')) return
@@ -121,6 +234,67 @@ export function initProjectReel() {
     frame = window.requestAnimationFrame(updateFromViewport)
   }
 
+  function onPointerMove(event: PointerEvent) {
+    if (!finePointer) return
+
+    cursorTargetX = event.clientX
+    cursorTargetY = event.clientY
+
+    const target = event.target as HTMLElement | null
+    const insideReel = Boolean(target?.closest('.projectReel'))
+    document.body.classList.toggle('project-reel-cursor-active', insideReel)
+
+    if (!insideReel) return
+
+    if (target?.closest('.projectImageButton, .projectReelExplore')) {
+      setCursorMode('open', 'ABRIR')
+      return
+    }
+
+    if (target?.closest('.projectReelControls button')) {
+      setCursorMode('nav', 'IR')
+      return
+    }
+
+    if (dragStartY !== null) {
+      setCursorMode('drag', 'ARRASTE')
+      return
+    }
+
+    if (event.clientY < window.innerHeight * 0.16) {
+      setCursorMode('up', '↑')
+    } else if (event.clientY > window.innerHeight * 0.84) {
+      setCursorMode('down', '↓')
+    } else {
+      setCursorMode('scroll', 'SCROLL')
+    }
+  }
+
+  function onPointerDown(event: PointerEvent) {
+    if (!finePointer) return
+
+    const target = event.target as HTMLElement | null
+    if (!target?.closest('.projectReel') || target.closest('button, a')) return
+
+    dragStartY = event.clientY
+    cursor.classList.add('is-pressed')
+    setCursorMode('drag', 'ARRASTE')
+  }
+
+  function onPointerUp(event: PointerEvent) {
+    if (dragStartY === null) return
+
+    const delta = event.clientY - dragStartY
+    dragStartY = null
+    cursor.classList.remove('is-pressed')
+
+    if (Math.abs(delta) > 70) {
+      goTo(activeIndex + (delta < 0 ? 1 : -1))
+    }
+
+    setCursorMode('scroll', 'SCROLL')
+  }
+
   function onKeyDown(event: KeyboardEvent) {
     if (!document.body.classList.contains('project-reel-in-view')) return
 
@@ -141,17 +315,30 @@ export function initProjectReel() {
   setActive(0)
   updateFromViewport()
 
+  if (finePointer) cursorFrame = window.requestAnimationFrame(renderCursor)
+
   window.addEventListener('scroll', requestUpdate, { passive: true })
   window.addEventListener('resize', requestUpdate)
   window.addEventListener('keydown', onKeyDown)
+  window.addEventListener('pointermove', onPointerMove, { passive: true })
+  window.addEventListener('pointerdown', onPointerDown)
+  window.addEventListener('pointerup', onPointerUp)
+  window.addEventListener('pointercancel', onPointerUp)
 
   cleanupProjectReel = () => {
     if (frame) window.cancelAnimationFrame(frame)
+    if (cursorFrame) window.cancelAnimationFrame(cursorFrame)
     window.removeEventListener('scroll', requestUpdate)
     window.removeEventListener('resize', requestUpdate)
     window.removeEventListener('keydown', onKeyDown)
-    document.body.classList.remove('project-reel-in-view')
+    window.removeEventListener('pointermove', onPointerMove)
+    window.removeEventListener('pointerdown', onPointerDown)
+    window.removeEventListener('pointerup', onPointerUp)
+    window.removeEventListener('pointercancel', onPointerUp)
+    document.body.classList.remove('project-reel-in-view', 'project-reel-cursor-active')
     nav.remove()
+    cursor.remove()
+    generatedNodes.forEach((node) => node.remove())
     reel.classList.remove('projectReel')
     scenes.forEach((scene) => scene.classList.remove('is-reel-active'))
   }
