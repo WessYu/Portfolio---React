@@ -10,19 +10,6 @@
   font-weight: 700;
 }
 
-.archiveNav div a:nth-child(3) {
-  display: none;
-}
-
-.archiveNav div a:nth-child(4) {
-  font-size: 0;
-}
-
-.archiveNav div a:nth-child(4)::after {
-  content: 'Sobre';
-  font-size: 0.82rem;
-}
-
 .intro h1 {
   font-size: 0;
 }
@@ -217,13 +204,13 @@ html {
   }
 
   .archiveNav > a::after,
-  .cornerMark::after,
-  .archiveNav div a:nth-child(4)::after {
+  .cornerMark::after {
     font-size: 0.74rem;
   }
 
   .intro h1::after {
-    font-size: clamp(2.35rem, 12vw, 3.4rem);
+    font-size: clamp(2.15rem, 10.5vw, 3.1rem);
+    line-height: 0.98;
   }
 
   .introRole {
@@ -232,7 +219,7 @@ html {
   }
 
   .projectScene {
-    min-height: 84svh;
+    min-height: auto;
     scroll-snap-stop: normal;
   }
 
@@ -241,12 +228,12 @@ html {
   }
 
   .projectLabel h2 {
-    font-size: clamp(2.8rem, 16vw, 4.5rem);
+    font-size: clamp(2.45rem, 13.5vw, 4rem);
   }
 
   .caseStudy {
-    padding-top: 64px;
-    padding-bottom: 64px;
+    padding-top: 54px;
+    padding-bottom: 54px;
   }
 
   .caseHero img {

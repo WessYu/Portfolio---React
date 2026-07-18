@@ -300,9 +300,9 @@ body.project-reel-in-view .projectReelNav {
   }
 
   .projectReel .projectScene {
-    min-height: 88svh !important;
+    min-height: auto !important;
     height: auto;
-    padding: 92px 18px 30px;
+    padding: 84px 18px 34px;
   }
 
   .projectReel .projectScene::before {
@@ -314,15 +314,16 @@ body.project-reel-in-view .projectReelNav {
 
   .projectReel .projectImageButton {
     width: 100%;
-    height: 62svh;
+    height: 50svh;
     opacity: 1;
     transform: none;
   }
 
   .projectReel .projectImageButton img,
   .projectReel .projectScene.is-reel-active .projectImageButton img {
+    object-fit: contain;
     filter: saturate(0.92) contrast(1.04) brightness(0.84);
-    transform: scale(1.05);
+    transform: none;
   }
 
   .projectReel .projectLabel {
@@ -330,18 +331,20 @@ body.project-reel-in-view .projectReelNav {
     left: auto;
     bottom: auto;
     width: 100%;
-    margin-top: -132px;
-    padding: 0 18px 24px;
+    margin-top: -92px;
+    padding: 0 18px 18px;
     opacity: 1;
     transform: none;
   }
 
   .projectReel .projectLabel h2 {
-    font-size: clamp(3.2rem, 15vw, 5.2rem);
+    font-size: clamp(2.55rem, 12vw, 4.2rem);
+    line-height: 0.9;
   }
 
   .projectReel .projectLabel p {
     font-size: 0.9rem;
+    line-height: 1.6;
   }
 }
 

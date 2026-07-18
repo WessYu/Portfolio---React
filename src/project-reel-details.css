@@ -146,10 +146,9 @@
   min-width: 182px;
   padding: 15px 22px;
   border: 1px solid rgba(255, 255, 255, 0.36);
-  border-radius: 999px;
+  border-radius: 8px;
   color: #f2f0ea;
-  background: rgba(5, 5, 5, 0.18);
-  backdrop-filter: blur(10px);
+  background: rgba(5, 5, 5, 0.82);
   opacity: 0.24;
   transform: translate3d(24px, 18px, 0);
   transition:
@@ -220,8 +219,7 @@
     border: 1px solid rgba(242, 240, 234, 0.48);
     border-radius: 50%;
     color: rgba(242, 240, 234, 0.92);
-    background: rgba(5, 5, 5, 0.05);
-    backdrop-filter: blur(2px);
+    background: rgba(5, 5, 5, 0.72);
     opacity: 0;
     pointer-events: none;
     transition:
@@ -326,16 +324,12 @@
 @media (max-width: 720px) {
   .projectReel .projectImageButton {
     width: 100%;
-    height: 66svh;
-    border-radius: 20px;
+    height: 50svh;
+    border-radius: 8px;
   }
 
   .projectReelTopMeta {
-    top: 106px;
-    left: 32px;
-    width: 220px;
-    opacity: 1;
-    transform: none;
+    display: none;
   }
 
   .projectReelTopMeta em {
@@ -350,11 +344,11 @@
   .projectReel .projectLabel {
     left: auto;
     width: 100%;
-    margin-top: -160px;
+    margin-top: -92px;
   }
 
   .projectReel .projectLabel h2 {
-    font-size: clamp(3.1rem, 15vw, 5rem);
+    font-size: clamp(2.55rem, 12vw, 4.2rem);
   }
 
   .projectReelExplore {
@@ -364,9 +358,36 @@
     z-index: 5;
     min-width: 0;
     width: calc(100% - 36px);
-    margin: 8px 18px 24px;
+    margin: 8px 18px 0;
+    padding: 13px 16px;
+    border-radius: 8px;
     opacity: 1;
     transform: none;
+  }
+}
+
+@media (max-width: 430px) {
+  .projectReel .projectScene {
+    padding: 78px 14px 30px;
+  }
+
+  .projectReel .projectImageButton {
+    height: 46svh;
+  }
+
+  .projectReel .projectLabel {
+    margin-top: -74px;
+    padding: 0 14px 14px;
+  }
+
+  .projectReel .projectLabel p {
+    margin-top: 14px;
+  }
+
+  .projectReelExplore {
+    width: calc(100% - 28px);
+    margin-right: 14px;
+    margin-left: 14px;
   }
 }
 
