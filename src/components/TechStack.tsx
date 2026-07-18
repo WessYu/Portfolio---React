@@ -43,14 +43,14 @@ export function TechStack() {
 
   return createPortal(
     <section className="techStack" id="tecnologias" aria-labelledby="tech-stack-title">
-      <div className="sectionTitle" data-reveal>
+      <div className="sectionTitle is-visible">
         <p className="metaLine">Tecnologias</p>
         <h2 id="tech-stack-title">Ferramentas que uso para transformar ideias em produtos.</h2>
       </div>
 
-      <div className="techGrid" data-reveal>
+      <div className="techGrid is-visible">
         {TECHNOLOGIES.map((technology, index) => (
-          <article className="techCard" key={technology.name} style={{ '--tech-index': index } as React.CSSProperties}>
+          <article className="techCard" key={technology.name}>
             <div className="techIconFrame">
               <img src={technology.icon} alt="" width="44" height="44" loading="lazy" decoding="async" />
             </div>
