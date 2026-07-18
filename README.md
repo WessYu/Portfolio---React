@@ -1,8 +1,8 @@
 # WESSYU-ARQUIVO
-<img width="1803" height="996" alt="image" src="https://github.com/user-attachments/assets/7791fefd-528a-462a-90b3-9cc97bd167e3" />
 
-
-
+<p align="center">
+  <img src="./assets/readme-preview.svg" alt="Preview do WESSYU Arquivo" width="100%" />
+</p>
 
 Portfólio pessoal desenvolvido para apresentar projetos selecionados construídos durante a transição do design para o desenvolvimento front-end.
 
