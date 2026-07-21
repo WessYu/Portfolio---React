@@ -1,0 +1,77 @@
+/* Camada de desempenho sem alterar a direção visual. */
+.projectScene,
+.caseStudy,
+.evolution,
+.person,
+.contact,
+.techStackSection {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+.projectScene,
+.projectImageButton,
+.projectImageButton img,
+.caseHero,
+.screens figure {
+  contain: layout paint style;
+}
+
+.projectImageButton img,
+.caseHero img,
+.screens img {
+  backface-visibility: hidden;
+}
+
+@media (max-width: 720px) {
+  .archiveShell {
+    background-image: linear-gradient(180deg, #050505 0%, #080808 42%, #050505 100%);
+    background-size: auto;
+  }
+
+  .projectScene {
+    min-height: 100svh;
+  }
+
+  .projectImageButton img {
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+
+  .projectImageButton:hover img,
+  .projectImageButton:focus-visible img {
+    transform: none !important;
+    filter: none !important;
+  }
+
+  [data-reveal] {
+    transform: translateY(14px);
+    transition-duration: 420ms;
+  }
+
+  .projectReelCursor,
+  .projectReelNav {
+    display: none !important;
+  }
+}
+
+@media (hover: none) {
+  .projectImageButton img {
+    transition: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
